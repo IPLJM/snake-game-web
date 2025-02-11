@@ -79,7 +79,8 @@ class Snake {
     }
 
     show() {
-        fill(0, 255, 0);
+       show() {
+        fill(0, 255, 0); // 🟢 Change la couleur du serpent ici
         for (let segment of this.body) {
             rect(segment.x, segment.y, gridSize, gridSize);
         }
@@ -104,11 +105,14 @@ class Snake {
 
 class Food {
     constructor() {
-        this.pos = createVector(floor(random(width / gridSize)) * gridSize, floor(random(height / gridSize)) * gridSize);
+        this.pos = createVector(
+            floor(random(width / gridSize)) * gridSize,
+            floor(random(height / gridSize)) * gridSize
+        );
+        this.image = loadImage("note.png"); // Charge l'image
     }
 
     show() {
-        fill(255, 0, 0);
-        rect(this.pos.x, this.pos.y, gridSize, gridSize);
+        image(this.image, this.pos.x, this.pos.y, gridSize, gridSize); // Affiche l'image
     }
 }
