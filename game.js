@@ -8,6 +8,7 @@ let backgroundImg;
 let noteImage;
 let gameOver = false;
 let touchStartX, touchStartY;
+let snakeImages = [];
 
 function preload() {
     backgroundImg = loadImage("background.png", 
@@ -19,18 +20,24 @@ function preload() {
         () => console.log("Image de note chargée ✅"),
         () => console.log("❌ Erreur: note.png introuvable !")
     );
+    
+    for (let i = 1; i <= 5; i++) {
+        snakeImages.push(loadImage(`snake${i}.png`, 
+            () => console.log(`Image snake${i}.png chargée ✅`),
+            () => console.log(`❌ Erreur: snake${i}.png introuvable !`)
+        ));
+    }
 }
 
 function setup() {
     canvas = createCanvas(400, 400);
     canvas.parent('game-container');
-    frameRate(7); // Ralentir légèrement le serpent
+    frameRate(7);
     snake = new Snake();
     food = new Food();
     direction = createVector(1, 0);
     nextDirection = direction;
     
-    // Désactiver le scroll sur mobile lors des swipes
     document.addEventListener('touchstart', (e) => e.preventDefault(), { passive: false });
     document.addEventListener('touchmove', (e) => e.preventDefault(), { passive: false });
 }
@@ -136,9 +143,9 @@ class Snake {
     }
 
     show() {
-        fill(0, 255, 0);
-        for (let segment of this.body) {
-            rect(segment.x, segment.y, gridSize, gridSize);
+        for (let i = 0; i < this.body.length; i++) {
+            let imgIndex = i % snakeImages.length;
+            image(snakeImages[imgIndex], this.body[i].x, this.body[i].y, gridSize, gridSize);
         }
     }
 
