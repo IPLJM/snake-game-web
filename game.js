@@ -6,24 +6,50 @@ let nextDirection;
 let canvas;
 let backgroundImg;
 let noteImage;
+let gameOver = false;
 
 function preload() {
-    backgroundImg = loadImage("background.png"); // Image de fond
-    noteImage = loadImage("note.png"); // Image de la note de musique
+    backgroundImg = loadImage("background.png", 
+        () => console.log("Image de fond chargée ✅"),
+        () => console.log("❌ Erreur: background.png introuvable !")
+    );
+    
+    noteImage = loadImage("note.png", 
+        () => console.log("Image de note chargée ✅"),
+        () => console.log("❌ Erreur: note.png introuvable !")
+    );
 }
 
 function setup() {
     canvas = createCanvas(400, 400);
     canvas.parent('game-container');
-    frameRate(10);
+    frameRate(7); // Ralentir légèrement le serpent
     snake = new Snake();
     food = new Food();
     direction = createVector(1, 0);
     nextDirection = direction;
+    
+    // Désactiver le scroll sur mobile lors des swipes
+    document.addEventListener('touchstart', (e) => e.preventDefault(), { passive: false });
+    document.addEventListener('touchmove', (e) => e.preventDefault(), { passive: false });
 }
 
 function draw() {
-    background(backgroundImg); // Appliquer l'image de fond
+    if (gameOver) {
+        background(50);
+        fill(255, 0, 0);
+        textSize(24);
+        textAlign(CENTER, CENTER);
+        text("Game Over! Tap to Restart", width / 2, height / 2);
+        return;
+    }
+
+    if (backgroundImg) {
+        background(backgroundImg);
+    } else {
+        background(50);
+    }
+    
     snake.update();
     snake.show();
     food.show();
@@ -33,7 +59,7 @@ function draw() {
     }
     
     if (snake.isDead()) {
-        noLoop();
+        gameOver = true;
     }
 }
 
@@ -50,6 +76,10 @@ function keyPressed() {
 }
 
 function touchStarted() {
+    if (gameOver) {
+        resetGame();
+        return;
+    }
     let centerX = width / 2;
     let centerY = height / 2;
     
@@ -64,6 +94,15 @@ function touchStarted() {
     }
 }
 
+function resetGame() {
+    gameOver = false;
+    snake = new Snake();
+    food = new Food();
+    direction = createVector(1, 0);
+    nextDirection = direction;
+    loop();
+}
+
 class Snake {
     constructor() {
         this.body = [createVector(200, 200)];
@@ -75,8 +114,7 @@ class Snake {
         let newHead = this.body[0].copy().add(p5.Vector.mult(direction, gridSize));
         
         if (newHead.x >= width || newHead.x < 0 || newHead.y >= height || newHead.y < 0 || this.intersect(newHead)) {
-            this.length = 1;
-            this.body = [createVector(200, 200)];
+            gameOver = true;
         } else {
             this.body.unshift(newHead);
             if (this.body.length > this.length) {
@@ -101,7 +139,7 @@ class Snake {
     }
 
     isDead() {
-        return this.length === 1 && this.body[0].x === 200 && this.body[0].y === 200;
+        return gameOver;
     }
 
     intersect(pos) {
@@ -115,6 +153,6 @@ class Food {
     }
 
     show() {
-        image(noteImage, this.pos.x, this.pos.y, gridSize, gridSize); // Afficher une note de musique au lieu d'un carré
+        image(noteImage, this.pos.x, this.pos.y, gridSize, gridSize);
     }
 }
