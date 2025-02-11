@@ -4,6 +4,13 @@ let gridSize = 20;
 let direction;
 let nextDirection;
 let canvas;
+let backgroundImg;
+let noteImage;
+
+function preload() {
+    backgroundImg = loadImage("background.png"); // Image de fond
+    noteImage = loadImage("note.png"); // Image de la note de musique
+}
 
 function setup() {
     canvas = createCanvas(400, 400);
@@ -16,7 +23,7 @@ function setup() {
 }
 
 function draw() {
-    background(0);
+    background(backgroundImg); // Appliquer l'image de fond
     snake.update();
     snake.show();
     food.show();
@@ -79,8 +86,7 @@ class Snake {
     }
 
     show() {
-       show() {
-        fill(0, 255, 0); // 🟢 Change la couleur du serpent ici
+        fill(0, 255, 0);
         for (let segment of this.body) {
             rect(segment.x, segment.y, gridSize, gridSize);
         }
@@ -105,14 +111,10 @@ class Snake {
 
 class Food {
     constructor() {
-        this.pos = createVector(
-            floor(random(width / gridSize)) * gridSize,
-            floor(random(height / gridSize)) * gridSize
-        );
-        this.image = loadImage("note.png"); // Charge l'image
+        this.pos = createVector(floor(random(width / gridSize)) * gridSize, floor(random(height / gridSize)) * gridSize);
     }
 
     show() {
-        image(this.image, this.pos.x, this.pos.y, gridSize, gridSize); // Affiche l'image
+        image(noteImage, this.pos.x, this.pos.y, gridSize, gridSize); // Afficher une note de musique au lieu d'un carré
     }
 }
