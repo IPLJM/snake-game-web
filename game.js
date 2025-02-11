@@ -7,6 +7,7 @@ let canvas;
 let backgroundImg;
 let noteImage;
 let gameOver = false;
+let touchStartX, touchStartY;
 
 function preload() {
     backgroundImg = loadImage("background.png", 
@@ -75,22 +76,33 @@ function keyPressed() {
     }
 }
 
-function touchStarted() {
+function touchStarted(event) {
     if (gameOver) {
         resetGame();
         return;
     }
-    let centerX = width / 2;
-    let centerY = height / 2;
+    touchStartX = event.touches[0].clientX;
+    touchStartY = event.touches[0].clientY;
+}
+
+function touchEnded(event) {
+    let touchEndX = event.changedTouches[0].clientX;
+    let touchEndY = event.changedTouches[0].clientY;
+    let dx = touchEndX - touchStartX;
+    let dy = touchEndY - touchStartY;
     
-    if (mouseX < centerX && direction.x === 0) {
-        nextDirection = createVector(-1, 0);
-    } else if (mouseX > centerX && direction.x === 0) {
-        nextDirection = createVector(1, 0);
-    } else if (mouseY < centerY && direction.y === 0) {
-        nextDirection = createVector(0, -1);
-    } else if (mouseY > centerY && direction.y === 0) {
-        nextDirection = createVector(0, 1);
+    if (Math.abs(dx) > Math.abs(dy)) {
+        if (dx > 0 && direction.x === 0) {
+            nextDirection = createVector(1, 0);
+        } else if (dx < 0 && direction.x === 0) {
+            nextDirection = createVector(-1, 0);
+        }
+    } else {
+        if (dy > 0 && direction.y === 0) {
+            nextDirection = createVector(0, 1);
+        } else if (dy < 0 && direction.y === 0) {
+            nextDirection = createVector(0, -1);
+        }
     }
 }
 
@@ -156,3 +168,6 @@ class Food {
         image(noteImage, this.pos.x, this.pos.y, gridSize, gridSize);
     }
 }
+
+document.addEventListener("touchstart", touchStarted);
+document.addEventListener("touchend", touchEnded);
