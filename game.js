@@ -93,7 +93,7 @@ function setup() {
     document.addEventListener('touchstart', (e) => e.preventDefault(), { passive: false });
     document.addEventListener('touchmove', (e) => e.preventDefault(), { passive: false });
     
-    // Affichage du titre en haut
+    // Affichage du titre mis à jour
     titleDiv = createDiv('🐍 Fais plus de 25 et gagne ta place pour la Boom du Rex 🕺');
     titleDiv.style('font-size', '20px');
     titleDiv.style('padding', '10px');
@@ -155,6 +155,13 @@ function draw() {
     if (snake.isDead()) {
         gameOver = true;
         gameOverImageIndex = (gameOverImageIndex + 1) % gameOverImages.length;
+    }
+}
+
+function touchStarted() {
+    if (gameOver) {
+        resetGame();
+        return;
     }
 }
 
