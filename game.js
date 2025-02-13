@@ -10,6 +10,7 @@ let gameOver = false;
 let touchStartX, touchStartY;
 let snakeImages = [];
 let gameOverImages = [];
+let specialGameOverImage;
 let score = 0;
 let scoreDiv;
 let gameOverImageIndex = 0;
@@ -23,6 +24,7 @@ function preload() {
     for (let i = 1; i <= 3; i++) {
         gameOverImages.push(loadImage(`gameover${i}.png`));
     }
+    specialGameOverImage = loadImage("gameover_special.png"); // Image pour le score de 50
 }
 
 class Snake {
@@ -108,7 +110,11 @@ function setup() {
 
 function draw() {
     if (gameOver) {
-        image(gameOverImages[gameOverImageIndex], 0, 0, width, height);
+        if (score >= 50) {
+            image(specialGameOverImage, 0, 0, width, height);
+        } else {
+            image(gameOverImages[gameOverImageIndex], 0, 0, width, height);
+        }
         return;
     }
     
