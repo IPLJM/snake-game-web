@@ -6,25 +6,33 @@
     <title>Snake Game</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.min.js"></script>
     <script src="game.js"></script>
+    
+    <!-- Importation de la police Roboto -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            text-align: center;
+        }
+        h1 {
+            font-size: 18px; /* Réduction de la taille du titre */
+            margin-bottom: 10px;
+        }
+        #event-info {
+            font-size: 14px; /* Plus petit que le titre */
+            margin-top: 5px;
+        }
+    </style>
 </head>
 <body>
-    <h1 style="text-align:center;">🐍 Fais plus de 25 et gagne ta place pour la Boom du Rex 🕺</h1>
+    <h1>🐍 Fais plus de 25 et gagne ta place pour la Boom du Rex 🕺</h1>
+    
     <div id="game-container" style="display:flex;justify-content:center;"></div>
 
-    <div id="event-info" style="
-        text-align: center; 
-        font-size: 18px; 
-        padding: 10px; 
-        background: #222; 
-        color: white; 
-        border-radius: 10px; 
-        width: 100%; 
-        position: absolute; 
-        bottom: 10px; 
-        left: 0;
-    ">
-        🪩 La Boom du Rex<br>
-        📅 21 février, 00h-5h<br>
+    <div id="event-info">
+        🪩 La Boom du Rex <br>
+        📅 21 février, 00h-5h <br>
         📍 Le Rex Toulouse
     </div>
 </body>
