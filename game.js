@@ -110,7 +110,7 @@ function setup() {
 
 function draw() {
     if (gameOver) {
-        if (score >= 50) {
+        if (score >= 90) {
             image(specialGameOverImage, 0, 0, width, height);
         } else {
             image(gameOverImages[gameOverImageIndex], 0, 0, width, height);
